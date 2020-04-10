@@ -1,0 +1,33 @@
+<html>
+   <head>
+      <style>
+
+      </style>
+      <script type = "text/javascript">
+         function new_maze() {
+            var z = parseInt(document.getElementById("mazeLength").value, 10);
+            alert(z);
+         };
+
+         $(document).ready(function() {
+            $(".newMaze").click(function()
+            {
+               new_maze();
+            });
+         });
+      </script>
+   </head>
+   <body onload="startUp()">
+      Select desired length/width of new maze.
+      <select id="mazeLength" name="mazeLength">
+         <option selecte"">16</option>
+         <option>32</option>
+         <option>64</option>
+         <option>128</option>
+         <option>256</option>
+      </select>
+      <center>
+      <button class="newMaze"> Create New Maze</button>
+      </center>
+   </body>
+</html>
