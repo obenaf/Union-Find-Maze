@@ -26,7 +26,22 @@
    </style>
 
    <script>
+
+
+   function clearGrid(){
+      var i = 0;
+         var lights = document.getElementsByClassName("clicked");
+         while (lights.length >= i)
+         {
+            lights[i].className = lights[i].className.replace(/\bclicked\b/g, "");
+            i += 2;
+         }
+      }
+
+
    window.onload = function(){
+      document.getElementById("refreshBtn").addEventListener('click', clearGrid);
+
       var grid = clickableGrid(16, 16, function(el,row,col,i){
 
           el.className='clicked';
@@ -52,16 +67,10 @@
           }
           return grid;
       }
-
-      function clearGrid(){
-         var lights = document.getElementsByClassName("clicked");
-         while (lights.length)
-         lights[0].className = lights[0].className.replace(/\bclicked\b/g, "");
-      }
    }
    </script>
 
 </head>
 
- <button onclick="clearGrid()">Refresh</button>
+ <button id="refreshBtn">Refresh</button>
 </html>
