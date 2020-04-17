@@ -1,33 +1,67 @@
+<!DOCTYPE html>
 <html>
-   <head>
-      <style>
 
-      </style>
-      <script type = "text/javascript">
-         function new_maze() {
-            var z = parseInt(document.getElementById("mazeLength").value, 10);
-            alert(z);
-         };
 
-         $(document).ready(function() {
-            $(".newMaze").click(function()
-            {
-               new_maze();
-            });
-         });
-      </script>
-   </head>
-   <body onload="startUp()">
-      Select desired length/width of new maze.
-      <select id="mazeLength" name="mazeLength">
-         <option selecte"">16</option>
-         <option>32</option>
-         <option>64</option>
-         <option>128</option>
-         <option>256</option>
-      </select>
-      <center>
-      <button class="newMaze"> Create New Maze</button>
-      </center>
-   </body>
+
+<head>
+   <meta charset="UTF-8">
+
+   <style>
+   .grid { margin:1em auto; border-collapse:collapse }
+   .grid td {
+       cursor:pointer;
+       width:30px; height:30px;
+       border:1px solid #ccc;
+       text-align:center;
+       font-family:sans-serif; font-size:13px
+   }
+   .grid td.hover {
+      background-color:blue;
+   }
+   .grid td.clicked {
+      border:none;
+      background-color:black;
+      font-weight:bold; color:white;
+   }
+   </style>
+
+   <script>
+   window.onload = function(){
+      var grid = clickableGrid(16, 16, function(el,row,col,i){
+
+          el.className='clicked';
+      });
+
+      document.body.appendChild(grid);
+
+      function clickableGrid( rows, cols, callback ){
+          var i=0;
+          var grid = document.createElement('table');
+          grid.className = 'grid';
+          for (var r=0;r<rows;++r){
+              var tr = grid.appendChild(document.createElement('tr'));
+              for (var c=0;c<cols;++c){
+                  var cell = tr.appendChild(document.createElement('td'));
+
+                  cell.addEventListener('click',(function(el,r,c,i){
+                      return function(){
+                          callback(el,r,c,i);
+                      }
+                  })(cell,r,c,i),false);
+              }
+          }
+          return grid;
+      }
+
+      function clearGrid(){
+         var lights = document.getElementsByClassName("clicked");
+         while (lights.length)
+         lights[0].className = lights[0].className.replace(/\bclicked\b/g, "");
+      }
+   }
+   </script>
+
+</head>
+
+ <button onclick="clearGrid()">Refresh</button>
 </html>
