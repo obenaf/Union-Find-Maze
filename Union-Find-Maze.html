@@ -23,20 +23,22 @@
       background-color:black;
       font-weight:bold; color:white;
    }
+   .grid td.unclicked {
+
+   }
    </style>
 
    <script>
 
-
+   //I honestly have no idea how this works
+   //JavaScript, tis a silly place
    function clearGrid(){
-      var i = 0;
-         var lights = document.getElementsByClassName("clicked");
-         while (lights.length >= i)
-         {
-            lights[i].className = lights[i].className.replace(/\bclicked\b/g, "");
-            i += 2;
+      var i;
+      var x = document.getElementsByClassName("clicked");
+      while(x){
+            x[0].className = "";
          }
-      }
+   }
 
 
    window.onload = function(){
