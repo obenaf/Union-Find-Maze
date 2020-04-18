@@ -14,30 +14,14 @@
          cursor: pointer;
          width: 30px;
          height: 30px;
-         border: 1px solid #ccc;
-         text-align: center;
-         font-family: sans-serif;
-         font-size: 13px
       }
 
-      .grid td.0 {
+      .grid td.start {
          background-color: blue !important;
       }
+
       .grid td.end {
          background-color: red !important;
-      }
-
-      .grid td.clicked {
-         border: none;
-         background-color: black;
-         font-weight: bold;
-         color: white;
-      }
-
-      .grid td.unclicked {}
-
-      .grid td.end {
-         background-color: red;
       }
    </style>
 
@@ -51,24 +35,6 @@
 
          return arr;
       }
-      //I honestly have no idea how this works
-      //JavaScript, tis a silly place
-      function clearGrid() {
-         var x = document.getElementsByClassName("clicked");
-         while (x) {
-            x[0].className = "";
-         }
-      }
-
-      function assimilate(classname) {
-         var i = 0;
-         x=document.getElementsByClassName(classname);
-         alert(x.length);
-         while(i <= x.length){
-            x[i].className = "0";
-            i++;
-         }
-      }
 
 
       var colorArray = ['#000000', '#0000FF'];
@@ -76,44 +42,23 @@
 
       window.onload = function() {
          var grid = clickableGrid(16, 16, function(el, row, col, y) {
-            if (row == 0){
-               if (classArray[row][col + 1] == 0 || classArray[row + 1][col] == 0 || classArray[row][col - 1] == 0) {
-                  assimilate(classArray[row][col].toString(3));
-                  el.className = "start";
-                  for (var i = 0; i < 16; i++) {
-                     for (var q = 0; q < 16; q++) {
-                        if (classArray[i][q] == classArray[row][col]) {
-                           classArray[i][q] = 0;
-                        }
-                     }
-                  }
-                  classArray[row][col] = 0;
-               }
-            }else if(col == 0){
+            if (col == 0) {
                if (classArray[row][col + 1] == 0 || classArray[row + 1][col] == 0 || classArray[row - 1][col] == 0) {
-                  assimilate(classArray[row][col].toString(3));
-                  el.className = "start";
-                  for (var i = 0; i < 16; i++) {
-                     for (var q = 0; q < 16; q++) {
-                        if (classArray[i][q] == classArray[row][col]) {
-                           classArray[i][q] = 0;
-                        }
-                     }
-                  }
                   classArray[row][col] = 0;
+                  el.className = "start";
                }
-            }else{
-               if (classArray[row][col + 1] == 0 || classArray[row + 1][col] == 0 || classArray[row - 1][col] == 0 || classArray[row][col - 1] == 0) {
-                  assimilate(classArray[row][col].toString(3));
+            } else if (row == 0) {
+               if (classArray[row + 1][col] == 0 || classArray[row][col + 1] == 0 || classArray[row][col - 1] == 0) {
+                  classArray[row][col] = 0;
                   el.className = "start";
-                  for (var i = 0; i < 16; i++) {
-                     for (var q = 0; q < 16; q++) {
-                        if (classArray[i][q] == classArray[row][col]) {
-                           classArray[i][q] = 0;
-                        }
-                     }
+               }
+            } else {
+               if (classArray[row][col + 1] == 0 || classArray[row + 1][col] == 0 || classArray[row][col - 1] == 0 || classArray[row - 1][col] == 0) {
+                  if (row == 15 && col == 15) {
+                     alert("Final cell is in same group as start cell!")
                   }
                   classArray[row][col] = 0;
+                  el.className = "start";
                }
             }
          });
@@ -125,7 +70,7 @@
             for (var x = 1; x < 256; x++) {
                colorArray.push('#' + Math.floor(Math.random() * 16777215).toString(16));
             }
-            var classNum = 0;
+            var classNum = 1;
             var i = 1;
             var grid = document.createElement('table');
             grid.className = 'grid';
@@ -135,26 +80,15 @@
                   var cell = tr.appendChild(document.createElement('td'));
 
                   if (r == 0 && c == 0) {
-                     cell.className = "0";
+                     cell.className = "start";
                      classArray[r][c] = 0;
                   } else if (r == 15 && c == 15) {
                      cell.className = "end";
-                  } else{
+                  } else {
                      if (typeof classArray[r][c] == 'undefined') {
                         classNum += 1;
                         classArray[r][c] = classNum;
                      }
-                     if (r != 15 && c != 15) {
-                        var seed = Math.ceil(Math.random() * 3)
-                        if (seed == 1) {
-                           classArray[r + 1][c] = classArray[r][c];
-                        } else if (seed == 2) {
-                           classArray[r][c + 1] = classNum;
-                        } else if (seed == 3) {
-
-                        }
-                     }
-                     cell.className = classNum.toString(3);
                      cell.style.backgroundColor = colorArray[classArray[r][c]];
                   }
 
@@ -172,6 +106,6 @@
    </script>
 
 </head>
-<button id="refreshBtn" onclick="refreshEvent">Refresh</button>
+<button id="refreshBtn" onclick="location.reload()">Refresh</button>
 
 </html>
