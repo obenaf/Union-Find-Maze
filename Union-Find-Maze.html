@@ -29,49 +29,6 @@
    .grid td.end {
       background-color:red;
    }
-   button {
-  width: 130px;
-  height: 40px;
-  background: linear-gradient(to bottom, #4eb5e5 0%,#389ed5 100%); /* W3C */
-  border: none;
-  border-radius: 5px;
-  position: relative;
-  border-bottom: 4px solid #2b8bc6;
-  color: #fbfbfb;
-  font-weight: 600;
-  font-family: 'Open Sans', sans-serif;
-  text-shadow: 1px 1px 1px rgba(0,0,0,.4);
-  font-size: 15px;
-  text-align: left;
-  text-indent: 5px;
-  box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2);
-  cursor: pointer;
-
-/* Just for presentation */
-  display: block;
-  margin: 0 auto;
-  margin-bottom: 20px;
-}
-button:active {
-  box-shadow: 0px 2px 0px 0px rgba(0,0,0,.2);
-  top: 1px;
-}
-
-button:after {
-  content: "";
-  width: 0;
-  height: 0;
-  display: block;
-  border-top: 20px solid #187dbc;
-  border-bottom: 20px solid #187dbc;
-  border-left: 16px solid transparent;
-  border-right: 20px solid #187dbc;
-  position: absolute;
-  opacity: 0.6;
-  right: 0;
-  top: 0;
-  border-radius: 0 5px 5px 0;
-}
    </style>
 
    <script>
@@ -79,69 +36,76 @@ button:after {
    //I honestly have no idea how this works
    //JavaScript, tis a silly place
    function clearGrid(){
-      var i;
       var x = document.getElementsByClassName("clicked");
       while(x){
          x[0].className = "";
       }
    }
 
-   function startUp(el, row, col, i){
-      if(row == 0 && col == 0)
-      {
-         el.className == 'start';
-      }else if(row == 15 && col == 15){
-         el.className == 'end';
-      }
-   }
 
+   var colorArray = [];
+   var classArray = new Array(256);
 
    window.onload = function(){
       document.getElementById("refreshBtn").addEventListener('click', clearGrid);
-
-      var grid = clickableGrid(16, 16, function(el,row,col,i){
-         if(row == 0 && col == 0)
-         {
-            el.className == 'start';
-         }else if(row == 15 && col == 15){
-            el.className == 'end';
-         }
-      });
 
       var grid = clickableGrid(16, 16, function(el,row,col,i){
          console.log("You clicked on element:",el);
          console.log("You clicked on row:",row);
          console.log("You clicked on col:",col);
          console.log("You clicked on item #:",i);
-         if(row == 0 && col == 0)
-         {
+         if(row == 0 && col == 0){
             el.className = 'start';
          }
          else{
             el.className='clicked';
          }
-
       });
 
-      let event = new Event("refresh");
-      elem.dispatchEvent(event);
 
       document.body.appendChild(grid);
 
+
+
       function clickableGrid( rows, cols, callback ){
-          var i=0;
+         for(var x = 0; x < 256; x++){
+            colorArray.concat('#' + Math.floor(Math.random()*16777215).toString(16));
+         }
+         for(x = 0; x < 128; x++){
+
+         }
+         var classNum = 1;
+          var i = 0;
           var grid = document.createElement('table');
           grid.className = 'grid';
           for (var r=0;r<rows;++r){
               var tr = grid.appendChild(document.createElement('tr'));
               for (var c=0;c<cols;++c){
+                  i++;
+                  classNum = i;
                   var cell = tr.appendChild(document.createElement('td'));
 
-                  cell.addEventListener('refresh',(function(el,r,c,i){
-                      return function(){
-                          callback(el,r,c,i);
-                      }
-                  })(cell,r,c,i),false);
+                  if(r == 0 && c == 0)
+                  {
+                     cell.className = 'start';
+                     classArray[0] = 0;
+                  }else if(r == 15 && c == 15){
+                     cell.className = 'end';
+                  }
+
+                  if(classArray[((c+1)*(r+1))])
+                  {
+                     classNum = classArray[((c+1)*(r+1))];
+                  }
+                  var seed = Math.ceil(Math.random()*4)
+                  if(seed == 1){
+                     if(classArray[((c+2)*(r+2))]){
+
+                     }else {
+                        classArray[((c+2)*(r+2))] = classNum;
+                     }
+                  }
+                  cell.style.background = colorArray[classArray[((c+1)*(r+1))]];
 
                   cell.addEventListener('click',(function(el,r,c,i){
                       return function(){
@@ -157,5 +121,5 @@ button:after {
    </script>
 
 </head>
-<button id="refreshBtn" onclick="alert('refresh');">Refresh</button>
+<button id="refreshBtn" onclick="refreshEvent">Refresh</button>
 </html>
