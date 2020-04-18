@@ -23,6 +23,23 @@
       .grid td.end {
          background-color: red !important;
       }
+      #refreshBtn {
+         display: block;
+margin-left: auto;
+margin-right: auto;
+      }
+      #status {
+         text-align: center;
+      }
+      #head-text {
+         text-align: center;
+      }
+      #text {
+         float: center;
+         margin-left: 20%;
+         margin-right: 20%;
+      }
+
    </style>
 
    <script>
@@ -36,21 +53,23 @@
          return arr;
       }
 
-
       var colorArray = [];
       var classArray = Create2DArray(17);
 
       window.onload = function() {
+
          var grid = clickableGrid(16, 16, function(el, row, col, y) {
             if (col == 0) {
                if (classArray[row][col + 1] == 0 || classArray[row + 1][col] == 0 || classArray[row - 1][col] == 0) {
                   classArray[row][col] = 0;
                   el.className = "start";
+                  document.getElementById("status").innerHTML = 'Status( Node: ' + col + ', ' + row + ' added to group. )';
                }
             } else if (row == 0) {
                if (classArray[row + 1][col] == 0 || classArray[row][col + 1] == 0 || classArray[row][col - 1] == 0) {
                   classArray[row][col] = 0;
                   el.className = "start";
+                  document.getElementById("status").innerHTML = 'Status( Node: ' + col + ', ' + row + ' added to group. )';
                }
             } else {
                if (classArray[row][col + 1] == 0 || classArray[row + 1][col] == 0 || classArray[row][col - 1] == 0 || classArray[row - 1][col] == 0) {
@@ -59,6 +78,7 @@
                   }
                   classArray[row][col] = 0;
                   el.className = "start";
+                  document.getElementById("status").innerHTML = 'Status( Node: ' + col + ', ' + row + ' added to group. )';
                }
             }
          });
@@ -89,6 +109,9 @@
                         classNum += 1;
                         classArray[r][c] = classNum;
                      }
+
+
+
                      cell.style.backgroundColor = colorArray[classArray[r][c]];
                   }
 
@@ -108,4 +131,20 @@
 </head>
 <button id="refreshBtn" onclick="location.reload()">Refresh</button>
 
+<h1 id="head-text">
+Union Find Maze
+</h1>
+
+<p id = "text">
+The Union-Find algorithm performs two useful operations on elements in a data set. <br>
+<b>Find</b>: Determines which subset a given element is in.  In the context of the algorithm, this is useful for checking if two elements reside in the same subset. <br>
+<b>Union</b>: Joins two subsets, with <i>n</i> number of elements, into a single subset. <br>
+This algorithm can be used in a variety of useful contexts, such as detecting a cycle in an undirected graph or finding a Kruskal’s minimum spanning tree. <br>
+<br>
+In this case, every element of the grid below is an individual subset.  The top left blue square is the start, and the lower right red square is the end.  The goal is to connect the two utilizing a demonstration of the algorithm.  Every time a square (element of a unique subset), adjacent to the current blue subset is clicked, the algorithm will find that the two subsets are different and join them into a unified subset (e.g. the blue one).  This continues until the end is clicked and a unified set connecting from start to finish is made.  The web page will indicate success when this has been completed.<br>
+</p>
+
+<p id = "status">
+Status( )
+</p>
 </html>
