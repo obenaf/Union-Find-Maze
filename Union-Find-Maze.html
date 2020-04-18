@@ -15,9 +15,9 @@
        text-align:center;
        font-family:sans-serif; font-size:13px
    }
-   .grid td.start {
+   /* .grid td.start {
       background-color:blue;
-   }
+   } */
    .grid td.clicked {
       border:none;
       background-color:black;
@@ -43,39 +43,32 @@
    }
 
 
-   var colorArray = [];
+   var colorArray = ['#000000','#0000FF'];
    var classArray = new Array(256);
 
    window.onload = function(){
       document.getElementById("refreshBtn").addEventListener('click', clearGrid);
 
       var grid = clickableGrid(16, 16, function(el,row,col,i){
-         console.log("You clicked on element:",el);
-         console.log("You clicked on row:",row);
-         console.log("You clicked on col:",col);
-         console.log("You clicked on item #:",i);
-         if(row == 0 && col == 0){
-            el.className = 'start';
-         }
-         else{
-            el.className='clicked';
+         if(classArray[((row+1)*(col+2))] == 1 || classArray[((row+1)*(col))] == 1 || classArray[((row+2)*(col+1))] == 1 || classArray[((row)*(col+1))] == 1){
+            classArray[(row+1)*(col+1)] = 1;
+            el.style.backgroundColor = '#0000FF';
+         }else {
+
          }
       });
 
-
       document.body.appendChild(grid);
 
-
-
       function clickableGrid( rows, cols, callback ){
-         for(var x = 0; x < 256; x++){
-            colorArray.concat('#' + Math.floor(Math.random()*16777215).toString(16));
+         for(var x = 1; x < 256; x++){
+            colorArray.push('#' + Math.floor(Math.random()*16777215).toString(16));
          }
          for(x = 0; x < 128; x++){
 
          }
-         var classNum = 1;
-          var i = 0;
+         var classNum;
+          var i = 1;
           var grid = document.createElement('table');
           grid.className = 'grid';
           for (var r=0;r<rows;++r){
@@ -85,39 +78,41 @@
                   classNum = i;
                   var cell = tr.appendChild(document.createElement('td'));
 
-                  if(r == 0 && c == 0)
-                  {
-                     cell.className = 'start';
-                     classArray[0] = 0;
+                  if(r == 0 && c == 0){
+                     classNum = 1;
+                     classArray[1] = 1;
                   }else if(r == 15 && c == 15){
-                     cell.className = 'end';
+
                   }
 
-                  if(classArray[((c+1)*(r+1))])
-                  {
+                  if(typeof classArray[((c+1)*(r+1))] == 'undefined'){
+                     classArray[((c+1)*(r+1))] = classNum;
+                  }else {
                      classNum = classArray[((c+1)*(r+1))];
                   }
-                  var seed = Math.ceil(Math.random()*4)
-                  if(seed == 1){
-                     if(classArray[((c+2)*(r+2))]){
+                     if(r != 15 && c != 15){
+                        var seed = Math.ceil(Math.random()*3)
+                        if(seed == 1){
+                           classArray[((c+2)*(r+1))] = classNum;
+                        }else if(seed == 2){
+                           classArray[((c+1)*(r+2))] = classNum;
+                        }else if(seed == 3){
 
-                     }else {
-                        classArray[((c+2)*(r+2))] = classNum;
+                        }
                      }
-                  }
-                  cell.style.background = colorArray[classArray[((c+1)*(r+1))]];
+                     cell.style.backgroundColor = colorArray[classArray[((c+1)*(r+1))]];
 
-                  cell.addEventListener('click',(function(el,r,c,i){
-                      return function(){
-                          callback(el,r,c,i);
-                      }
-                  })(cell,r,c,i),false);
-
+                     cell.addEventListener('click',(function(el,r,c,i){
+                         return function(){
+                             callback(el,r,c,i);
+                         }
+                     })(cell,r,c,i),false);
+               }
               }
+               return grid;
           }
-          return grid;
+
       }
-   }
    </script>
 
 </head>
