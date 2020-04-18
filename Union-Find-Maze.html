@@ -20,8 +20,11 @@
          font-size: 13px
       }
 
-      .grid td.start {
+      .grid td.0 {
          background-color: blue !important;
+      }
+      .grid td.end {
+         background-color: red !important;
       }
 
       .grid td.clicked {
@@ -39,14 +42,14 @@
    </style>
 
    <script>
-        function Create2DArray(rows) {
-        var arr = [];
+      function Create2DArray(rows) {
+         var arr = [];
 
-        for (var i=0;i<rows;i++) {
-           arr[i] = [];
-        }
+         for (var i = 0; i < rows; i++) {
+            arr[i] = [];
+         }
 
-        return arr;
+         return arr;
       }
       //I honestly have no idea how this works
       //JavaScript, tis a silly place
@@ -59,36 +62,59 @@
 
       function assimilate(classname) {
          var i = 0;
-         var x = document.getElementsByClassName(classname);
-         while (i < x.length) {
-            x[0].className = "start";
-
+         x=document.getElementsByClassName(classname);
+         alert(x.length);
+         while(i <= x.length){
+            x[i].className = "0";
             i++;
          }
       }
 
 
       var colorArray = ['#000000', '#0000FF'];
-      var classArray = Create2DArray(18);
+      var classArray = Create2DArray(17);
 
       window.onload = function() {
-         document.getElementById("refreshBtn").addEventListener('click', clearGrid);
-
-         var grid = clickableGrid(16, 16, function(el, row, col, i) {
-
-            if (classArray[row][col+1] == 0 || classArray[row+1][col] == 0 || classArray[row-1][col] == 0 || classArray[row][col-1] == 0) {
-               assimilate(el.className);
-               el.className = "start";
-               for (var i = 0; i < 16; i++) {
-                  for(var q= 0; q < 16; q++){
-                     if (classArray[i][q] == classArray[row][col]) {
-                        classArray[i][q] = 0;
+         var grid = clickableGrid(16, 16, function(el, row, col, y) {
+            if (row == 0){
+               if (classArray[row][col + 1] == 0 || classArray[row + 1][col] == 0 || classArray[row][col - 1] == 0) {
+                  assimilate(classArray[row][col].toString(3));
+                  el.className = "start";
+                  for (var i = 0; i < 16; i++) {
+                     for (var q = 0; q < 16; q++) {
+                        if (classArray[i][q] == classArray[row][col]) {
+                           classArray[i][q] = 0;
+                        }
                      }
                   }
+                  classArray[row][col] = 0;
                }
-               classArray[row][col] = 0;
-            } else {
-
+            }else if(col == 0){
+               if (classArray[row][col + 1] == 0 || classArray[row + 1][col] == 0 || classArray[row - 1][col] == 0) {
+                  assimilate(classArray[row][col].toString(3));
+                  el.className = "start";
+                  for (var i = 0; i < 16; i++) {
+                     for (var q = 0; q < 16; q++) {
+                        if (classArray[i][q] == classArray[row][col]) {
+                           classArray[i][q] = 0;
+                        }
+                     }
+                  }
+                  classArray[row][col] = 0;
+               }
+            }else{
+               if (classArray[row][col + 1] == 0 || classArray[row + 1][col] == 0 || classArray[row - 1][col] == 0 || classArray[row][col - 1] == 0) {
+                  assimilate(classArray[row][col].toString(3));
+                  el.className = "start";
+                  for (var i = 0; i < 16; i++) {
+                     for (var q = 0; q < 16; q++) {
+                        if (classArray[i][q] == classArray[row][col]) {
+                           classArray[i][q] = 0;
+                        }
+                     }
+                  }
+                  classArray[row][col] = 0;
+               }
             }
          });
 
@@ -99,46 +125,38 @@
             for (var x = 1; x < 256; x++) {
                colorArray.push('#' + Math.floor(Math.random() * 16777215).toString(16));
             }
-            for (x = 0; x < 128; x++) {
-
-            }
-            var classNum;
+            var classNum = 0;
             var i = 1;
             var grid = document.createElement('table');
             grid.className = 'grid';
             for (var r = 0; r < rows; ++r) {
                var tr = grid.appendChild(document.createElement('tr'));
                for (var c = 0; c < cols; ++c) {
-                  i++;
-                  classNum = i;
                   var cell = tr.appendChild(document.createElement('td'));
 
                   if (r == 0 && c == 0) {
-                     cell.className = "start";
-                     classNum = 0;
-                     classArray[0][0] = 0;
+                     cell.className = "0";
+                     classArray[r][c] = 0;
                   } else if (r == 15 && c == 15) {
-
-                  }
-
-                  if (typeof classArray[c][r] == 'undefined') {
-                     classArray[c][r] = classNum;
-                     cell.classList.add(classNum.toString(3));
-                  } else {
-                     classNum = classArray[c][r];
-                     cell.classList.add(classNum.toString(3));
-                  }
-                  if (r != 15 && c != 15) {
-                     var seed = Math.ceil(Math.random() * 3)
-                     if (seed == 1) {
-                        classArray[c+1][r] = classNum;
-                     } else if (seed == 2) {
-                        classArray[c][r+1] = classNum;
-                     } else if (seed == 3) {
-
+                     cell.className = "end";
+                  } else{
+                     if (typeof classArray[r][c] == 'undefined') {
+                        classNum += 1;
+                        classArray[r][c] = classNum;
                      }
+                     if (r != 15 && c != 15) {
+                        var seed = Math.ceil(Math.random() * 3)
+                        if (seed == 1) {
+                           classArray[r + 1][c] = classArray[r][c];
+                        } else if (seed == 2) {
+                           classArray[r][c + 1] = classNum;
+                        } else if (seed == 3) {
+
+                        }
+                     }
+                     cell.className = classNum.toString(3);
+                     cell.style.backgroundColor = colorArray[classArray[r][c]];
                   }
-                  cell.style.backgroundColor = colorArray[classArray[c][r]];
 
                   cell.addEventListener('click', (function(el, r, c, i) {
                      return function() {
