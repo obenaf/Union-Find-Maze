@@ -1,5 +1,11 @@
 <!DOCTYPE html>
 <html>
+<!--
+Built by:
+Richard Deming II
+&
+Toby Tabladillo
+ -->
 
 <head>
    <meta charset="UTF-8">
@@ -23,23 +29,31 @@
       .grid td.end {
          background-color: red !important;
       }
+
       #refreshBtn {
          display: block;
-margin-left: auto;
-margin-right: auto;
+         margin-left: auto;
+         margin-right: auto;
       }
+
       #status {
          text-align: center;
       }
+
       #head-text {
          text-align: center;
       }
+
       #text {
          float: center;
          margin-left: 20%;
          margin-right: 20%;
       }
-
+      #author-text {
+         text-align: center;
+         font-style: oblique;
+         font-size: small;
+      }
    </style>
 
    <script>
@@ -85,7 +99,6 @@ margin-right: auto;
 
          document.body.appendChild(grid);
 
-
          function clickableGrid(rows, cols, callback) {
             for (var x = 1; x < 256; x++) {
                colorArray.push('#' + Math.floor(Math.random() * 16777215).toString(16));
@@ -130,21 +143,29 @@ margin-right: auto;
 
 </head>
 <button id="refreshBtn" onclick="location.reload()">Refresh</button>
-
+<body>
 <h1 id="head-text">
-Union Find Maze
+   Union Find Maze
 </h1>
 
-<p id = "text">
-The Union-Find algorithm performs two useful operations on elements in a data set. <br>
-<b>Find</b>: Determines which subset a given element is in.  In the context of the algorithm, this is useful for checking if two elements reside in the same subset. <br>
-<b>Union</b>: Joins two subsets, with <i>n</i> number of elements, into a single subset. <br>
-This algorithm can be used in a variety of useful contexts, such as detecting a cycle in an undirected graph or finding a Kruskal’s minimum spanning tree. <br>
-<br>
-In this case, every element of the grid below is an individual subset.  The top left blue square is the start, and the lower right red square is the end.  The goal is to connect the two utilizing a demonstration of the algorithm.  Every time a square (element of a unique subset), adjacent to the current blue subset is clicked, the algorithm will find that the two subsets are different and join them into a unified subset (e.g. the blue one).  This continues until the end is clicked and a unified set connecting from start to finish is made.  The web page will indicate success when this has been completed.<br>
+<p id="author-text">
+Made by: Richard Deming II & Toby Tabladillo
 </p>
 
-<p id = "status">
-Status( )
+<p id="text">
+   The Union-Find algorithm performs two useful operations on elements in a data set. <br>
+   <b>Find</b>: Determines which subset a given element is in. In the context of the algorithm, this is useful for checking if two elements reside in the same subset. <br>
+   <b>Union</b>: Joins two subsets, with <i>n</i> number of elements, into a single subset. <br>
+   This algorithm can be used in a variety of useful contexts, such as detecting a cycle in an undirected graph or finding a Kruskal’s minimum spanning tree. <br>
+   <br>
+   In this case, every element of the grid below is an individual subset. The top left blue square is the start, and the lower right red square is the end. The goal is to connect the two utilizing a demonstration of the algorithm. Every time a square
+   (element of a unique subset), adjacent to the current blue subset is clicked, the algorithm will find that the two subsets are different and join them into a unified subset (e.g. the blue one). This continues until the end is clicked and a unified
+   set connecting from start to finish is made. The web page will indicate success when this has been completed.<br>
 </p>
+
+<p id="status">
+   Status( )
+</p>
+</body>
+
 </html>
